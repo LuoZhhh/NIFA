@@ -48,7 +48,7 @@ Run the following code to install all required packages.
 
 ## Run the codes
 
-All arguments are properly set in advance in the script files `run.sh` for reproducing our results. 
+All arguments are properly set in advance in the script file `run.sh` for reproducing our results. 
 
 ```
 python main.py --dataset pokec_z --alpha 0.01 --beta 4 --node 102 --edge 50 --before --device 0 --models 'GCN' 'GraphSAGE' 'APPNP' 'SGC'
