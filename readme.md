@@ -35,14 +35,12 @@ Run the following code to install all required packages.
   │   ├── main.py
   │   ├── model.py
   │   ├── models
-  │   ├── __pycache__
   │   ├── run.sh
   │   └── utils.py
   ├── data
   │   ├── dblp.bin
   │   ├── pokec_n.bin
   │   └── pokec_z.bin
-  ├── NIFA.zip
   └── requirements.txt
   ```
 
