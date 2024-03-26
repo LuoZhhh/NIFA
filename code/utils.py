@@ -12,9 +12,9 @@ def load_data(dataset):
     idx_train = torch.where(g.ndata['train_index'])[0]
     idx_val = torch.where(g.ndata['val_index'])[0]
     idx_test = torch.where(g.ndata['test_index'])[0]
-    g.ndata.pop('train_index')
-    g.ndata.pop('val_index')
-    g.ndata.pop('test_index')
+    # g.ndata.pop('train_index')
+    # g.ndata.pop('val_index')
+    # g.ndata.pop('test_index')
     index_split = {'train_index': idx_train,
                     'val_index': idx_val,
                     'test_index': idx_test}

@@ -18,6 +18,7 @@ parser.add_argument('--node', type=int, default=102, help='budget of injected no
 parser.add_argument('--edge', type=int, default=50, help='budget of degrees')
 parser.add_argument('--alpha', type=float, default=1, help='weight of loss_cf')
 parser.add_argument('--beta', type=float, default=1, help='weight of loss_fair')
+parser.add_argument('--defense', type=float, default=0, help='the ratio of defense')
 
 parser.add_argument('--ratio', type=float, default=0.5, help='node of top ratio uncertainty are attacked')
 parser.add_argument('--before', action='store_true')
@@ -27,7 +28,7 @@ parser.add_argument('--loops', type=int, default=50)
 parser.add_argument('--epochs', type=int, default=1000, help='number of epochs to train')
 parser.add_argument('--lr', type=float, default=0.001, help='learning rate')
 parser.add_argument('--patience', type=int, default=50, help='early stop patience')
-parser.add_argument('--n_times', type=int, default=5, help='times to run')
+parser.add_argument('--n_times', type=int, default=1, help='times to run')
 
 parser.add_argument('--device', type=int, default=0, help='device ID for GPU')
 
@@ -46,7 +47,7 @@ A_ACC = {model:[] for model in args.models}
 A_SP = {model:[] for model in args.models}
 A_EO = {model:[] for model in args.models}
 
-for i in tqdm.tqdm(range(args.n_times)):
+for i in range(args.n_times):
     g, index_split = load_data(args.dataset)
     g = g.to(device)
     in_dim = g.ndata['feature'].shape[1]
@@ -64,12 +65,16 @@ for i in tqdm.tqdm(range(args.n_times)):
             B_EO[model].append(eo)
     
     attacker = Attacker(g, in_dim, hid_dim, out_dim, device, args)
-    g = attacker.attack(g, index_split)
+    g_attack, uncertainty = attacker.attack(g, index_split)  # uncertainty shape: [n_nodes]
+    # save_graph(g_attack, index_split)
+    # import pdb; pdb.set_trace()
+
+    dgl.save_graphs(f"./output/{args.dataset}_poisoned.bin", [g])
 
     for model in args.models:
         victim_model = VictimModel(in_dim, hid_dim, out_dim, device, name=model)
-        victim_model.optimize(g, index_split, args.epochs, args.lr, args.patience)
-        acc, sp, eo = victim_model.eval(g, index_split)
+        victim_model.re_optimize(g_attack, uncertainty, index_split, args.epochs, args.lr, args.patience, args.defense)
+        acc, sp, eo = victim_model.eval(g_attack, index_split)
         A_ACC[model].append(acc)
         A_SP[model].append(sp)
         A_EO[model].append(eo)

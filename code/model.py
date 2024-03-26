@@ -55,6 +55,48 @@ class VictimModel():
 
         self.model.load_state_dict(best_model_state_dict)
 
+    def re_optimize(self, g, uncertainty, index_split, epochs, lr, patience, defense):
+        optimizer = torch.optim.Adam(self.model.parameters(), lr=lr, weight_decay=0)
+        loss_fn = nn.CrossEntropyLoss()
+
+        self.model.train()
+        feature = g.ndata['feature']
+        label = g.ndata['label']
+
+        # import pdb; pdb.set_trace()
+        mask = torch.zeros(uncertainty.shape[0]).to(feature.device)
+        mask[index_split['train_index']] = 1
+
+        unc = torch.where(mask==1, uncertainty, 1)
+        _, train_idx = torch.sort(unc, descending=False)
+        train_index = train_idx[:int((1-defense)*index_split['train_index'].shape[0])]
+
+        val_index, test_index = index_split['val_index'], index_split['test_index']
+
+        best_val_acc = 0
+        cnt = 0
+        for epoch in range(epochs):
+            output = self.model(g, feature)
+            pred = output.argmax(1)
+            val_acc = torch.eq(pred, label)[val_index].sum() / len(val_index)
+            test_acc = torch.eq(pred, label)[test_index].sum() / len(test_index)
+
+            if val_acc > best_val_acc:
+                best_val_acc = val_acc
+                best_model_state_dict = copy.deepcopy(self.model.state_dict())
+                cnt = 0
+            else:
+                cnt += 1        
+            if cnt >= patience and epoch > 200:
+                break 
+
+            loss = loss_fn(output[train_index], label[train_index])
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+
+        self.model.load_state_dict(best_model_state_dict)
+
     def eval(self, g, index_split):
         with torch.no_grad():
             self.model.eval()

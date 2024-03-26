@@ -200,5 +200,5 @@ class Attacker():
         uncertainty = self.bayesian_network.optimize(g, self.args.lr)
         g = self.edge_attack.attack(g, uncertainty, self.args.ratio)
         g = self.feature_attack.optimize(g, index_split, self.args.epochs, self.args.lr, self.args.alpha, self.args.beta, self.args.loops)
-        return g
+        return g, uncertainty
 
