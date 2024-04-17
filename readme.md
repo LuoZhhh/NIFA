@@ -1,6 +1,6 @@
-# Implementation for IJCAI 2024 #3239
+# Implementation for our submission to NeurIPS 2024
 
-This repository includes the implementation for our paper: ***Are Your Models Still Fair? Adversarial Fairness Attacks on Graph Neural Networks via Node Injections.***
+This repository includes the implementation for our paper: ***Are Your Models Still Fair? Adversarial Fairness Attacks on Graph Neural Networks via Node Injections.*** to NeurIPS 2024.
 
 ## Environments
 
