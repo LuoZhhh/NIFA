@@ -2,6 +2,7 @@ import torch
 import numpy as np
 import argparse
 import tqdm
+import time
 
 from model import VictimModel
 from attack import *
@@ -64,8 +65,11 @@ for i in range(args.n_times):
             B_SP[model].append(sp)
             B_EO[model].append(eo)
     
+    start_time = time.time()
     attacker = Attacker(g, in_dim, hid_dim, out_dim, device, args)
     g_attack, uncertainty = attacker.attack(g, index_split)  # uncertainty shape: [n_nodes]
+    end_time = time.time()
+    print(">> Finish attack, cost {:.4f}s.".format(end_time-start_time))
     # save_graph(g_attack, index_split)
     # import pdb; pdb.set_trace()
 
@@ -84,10 +88,10 @@ str_format = lambda x, y: "{:.2f}±{:.2f}".format(np.mean(x[y])*100, np.std(x[y]
 for model in args.models:
     print("\033[95m{}\033[0m".format(model))
     if args.before:
-        print("before acc:{}".format(str_format(B_ACC, model)))
-        print("before sp:{}".format(str_format(B_SP, model)))
-        print("before eo:{}".format(str_format(B_EO, model)))
-    print("after acc:{}".format(str_format(A_ACC, model)))
-    print("after sp:{}".format(str_format(A_SP, model)))
-    print("after eo:{}".format(str_format(A_EO, model)))
+        print(">> before acc:{}".format(str_format(B_ACC, model)))
+        print(">> before sp:{}".format(str_format(B_SP, model)))
+        print(">> before eo:{}".format(str_format(B_EO, model)))
+    print(">> after acc:{}".format(str_format(A_ACC, model)))
+    print(">> after sp:{}".format(str_format(A_SP, model)))
+    print(">> after eo:{}".format(str_format(A_EO, model)))
 
