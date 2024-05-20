@@ -89,9 +89,9 @@ class Edge_Attack():
             _, idx_d = torch.sort(unc_d, descending=True)
         elif self.mode == "degree":
             degree = g.in_degrees() + g.out_degrees()
-            unc_a = torch.where(mask_a, uncertainty, 0)
+            unc_a = torch.where(mask_a, degree, 1000)
             _, idx_a = torch.sort(unc_a, descending=False)
-            unc_d = torch.where(mask_d, uncertainty, 0)
+            unc_d = torch.where(mask_d, degree, 1000)
             _, idx_d = torch.sort(unc_d, descending=False)
         else:
             raise NotImplementedError
