@@ -26,6 +26,8 @@ parser.add_argument('--before', action='store_true')
 parser.add_argument('--models', type=str, nargs="*", default=[])
 parser.add_argument('--loops', type=int, default=50)
 
+parser.add_argument('--mode', type=str, default="uncertainty", choices=['uncertainty','degree'], help='principle for selecting target nodes')
+
 parser.add_argument('--epochs', type=int, default=1000, help='number of epochs to train')
 parser.add_argument('--lr', type=float, default=0.001, help='learning rate')
 parser.add_argument('--patience', type=int, default=50, help='early stop patience')

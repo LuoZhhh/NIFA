@@ -74,17 +74,27 @@ class Bayesian_Network(nn.Module):
 
 
 class Edge_Attack():
-    def __init__(self, node, edge):
+    def __init__(self, node, edge, mode):
         self.node = node
         self.edge = edge - edge % 2
+        self.mode = mode
 
     def attack(self, g, uncertainty, ratio):
         mask_a = torch.logical_and(g.ndata['sensitive']==1, g.ndata['label']>=0)
         mask_d = torch.logical_and(g.ndata['sensitive']==0, g.ndata['label']>=0)
-        unc_a = torch.where(mask_a, uncertainty, 0)
-        _, idx_a = torch.sort(unc_a, descending=True)
-        unc_d = torch.where(mask_d, uncertainty, 0)
-        _, idx_d = torch.sort(unc_d, descending=True)
+        if self.mode == "uncertainty":
+            unc_a = torch.where(mask_a, uncertainty, 0)
+            _, idx_a = torch.sort(unc_a, descending=True)
+            unc_d = torch.where(mask_d, uncertainty, 0)
+            _, idx_d = torch.sort(unc_d, descending=True)
+        elif self.mode == "degree":
+            degree = g.in_degrees() + g.out_degrees()
+            unc_a = torch.where(mask_a, uncertainty, 0)
+            _, idx_a = torch.sort(unc_a, descending=False)
+            unc_d = torch.where(mask_d, uncertainty, 0)
+            _, idx_d = torch.sort(unc_d, descending=False)
+        else:
+            raise NotImplementedError
 
         idx_a = idx_a[:int(ratio*sum(mask_a))]
         idx_d = idx_d[:int(ratio*sum(mask_d))]
@@ -192,7 +202,7 @@ class Attacker():
 
         self.args = args
         self.bayesian_network = Bayesian_Network(in_dim, hid_dim, out_dim, args.T, args.theta, device).to(device)
-        self.edge_attack = Edge_Attack(args.node, args.edge)
+        self.edge_attack = Edge_Attack(args.node, args.edge, args.mode)
         self.feature_attack = Feature_Attack(g, in_dim, hid_dim, out_dim, args.node).to(device)
 
     def attack(self, g, index_split):
