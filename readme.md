@@ -34,7 +34,6 @@ Run the following code to install all required packages.
   │   ├── attack.py
   │   ├── main.py
   │   ├── model.py
-  │   ├── models
   │   ├── run.sh
   │   └── utils.py
   ├── data
