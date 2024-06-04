@@ -1,6 +1,6 @@
 # Implementation for NIFA
 
-This repository includes the implementation for our submission to NeurIPS 2024: ***Are Your Models Still Fair? Fairness Attacks on Graph Neural Networks via Node Injections.***
+This repository includes the implementation for our paper: ***Are Your Models Still Fair? Fairness Attacks on Graph Neural Networks via Node Injections.***
 
 ## Environments
 
