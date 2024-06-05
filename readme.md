@@ -55,3 +55,7 @@ python main.py --dataset pokec_n --alpha 0.01 --beta 4 --node 87 --edge 50 --bef
 
 python main.py --dataset dblp --alpha 0.1 --beta 8 --node 32 --edge 24 --epochs 500 --before --device 2 --models 'GCN' 'GraphSAGE' 'APPNP' 'SGC'
 ```
+
+## Licenses
+
+This project is licensed under CC BY-NC-ND 4.0. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/4.0/
