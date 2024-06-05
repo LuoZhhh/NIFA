@@ -58,4 +58,4 @@ python main.py --dataset dblp --alpha 0.1 --beta 8 --node 32 --edge 24 --epochs 
 
 ## Licenses
 
-This project is licensed under CC BY-NC-ND 4.0. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-nd/4.0/
+This project is licensed under CC BY-NC-ND 4.0. To view a copy of this license, please visit http://creativecommons.org/licenses/by-nc-nd/4.0/
