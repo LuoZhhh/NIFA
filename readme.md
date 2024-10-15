@@ -59,3 +59,17 @@ python main.py --dataset dblp --alpha 0.1 --beta 8 --node 32 --edge 24 --epochs 
 ## Licenses
 
 This project is licensed under CC BY-NC-ND 4.0. To view a copy of this license, please visit http://creativecommons.org/licenses/by-nc-nd/4.0/
+
+## BibTeX
+
+If you like our work and use the model for your research, please cite our work as follows:
+
+```bibtex
+@inproceedings{luo2024nifa,
+author = {Luo, Zihan and Huang, Hong and Zhou, Yongkang and Zhang, Jiping and Chen, Nuo and Jin, Hai},
+title = {Are Your Models Still Fair? Fairness Attacks on Graph Neural Networks via Node Injections},
+booktitle={Thirty-eighth Conference on Neural Information Processing Systems},
+year = {2024},
+month = {October}
+}
+``` 
