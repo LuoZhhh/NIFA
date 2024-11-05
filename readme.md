@@ -2,6 +2,8 @@
 
 This repository includes the implementations for our paper at NeurIPS 2024: [***Are Your Models Still Fair? Fairness Attacks on Graph Neural Networks via Node Injections.***](https://arxiv.org/abs/2406.03052)
 
+<img src="https://github.com/LuoZhhh/NIFA/blob/main/framework.png" alt="Framework of NIFA">
+
 ## Environments
 
 Python 3.8.12
