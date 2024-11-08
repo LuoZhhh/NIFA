@@ -1,4 +1,4 @@
-# NIFA <a href="https://arxiv.org/abs/2406.03052"><img src="https://img.shields.io/badge/Paper-Arxiv-red"></a>
+# NIFA
 
 This repository includes the implementations for our paper at NeurIPS 2024: [***Are Your Models Still Fair? Fairness Attacks on Graph Neural Networks via Node Injections.***](https://arxiv.org/abs/2406.03052)
 
