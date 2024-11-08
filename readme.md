@@ -1,6 +1,6 @@
 # NIFA
 
-<p align="center">
+<p align="left">
     <a href="https://arxiv.org/abs/2406.03052"><img src="https://img.shields.io/badge/Paper-Arxiv-red"></a>
 </p>
 
