@@ -73,7 +73,7 @@ Since FairGNN, FairVGNN, and FairSIN have been independently open-sourced, we ha
 Since the dataset processing methods of FairGNN, FairVGNN, and FairSIN are highly similar, after generating the poisoned graph using NIFA, you can use the following code to process the dataset and make it compatible with their repositories for subsequent evaluations:
 
 ```
-glist, _ = dgl.load_graphs(f'../data/{dataset}.bin')  # load poisoned graph file
+glist, _ = dgl.load_graphs(f'./output/{args.dataset}_poisoned.bin')  # load poisoned graph file
 g = glist[0]
 
 idx_train = torch.where(g.ndata['train_index'])[0]
