@@ -1,8 +1,8 @@
-# NIFA
+# Implementations for NIFA
 
 This repository includes the implementations for our paper at NeurIPS 2024: [***Are Your Models Still Fair? Fairness Attacks on Graph Neural Networks via Node Injections.***](https://arxiv.org/abs/2406.03052)
 
-<img src="https://github.com/LuoZhhh/NIFA/blob/main/framework.png" alt="Framework of NIFA">
+<img src="https://github.com/CGCL-codes/NIFA/blob/main/framework.png" alt="Framework of NIFA">
 
 ## Environments
 
@@ -48,7 +48,9 @@ Run the following code to install all required packages.
 
 ## Run the codes
 
-All arguments are properly set below for reproducing our results. 
+### Evaluation of classic GNN models
+
+All arguments are properly set below for reproducing our results on four classic GNN models. 
 
 ```
 python main.py --dataset pokec_z --alpha 0.01 --beta 4 --node 102 --edge 50 --before --device 0 --models 'GCN' 'GraphSAGE' 'APPNP' 'SGC'
@@ -56,6 +58,36 @@ python main.py --dataset pokec_z --alpha 0.01 --beta 4 --node 102 --edge 50 --be
 python main.py --dataset pokec_n --alpha 0.01 --beta 4 --node 87 --edge 50 --before --device 1 --models 'GCN' 'GraphSAGE' 'APPNP' 'SGC'
 
 python main.py --dataset dblp --alpha 0.1 --beta 8 --node 32 --edge 24 --epochs 500 --before --device 2 --models 'GCN' 'GraphSAGE' 'APPNP' 'SGC'
+```
+
+### Evaluation of fair GNN models
+
+Since FairGNN, FairVGNN, and FairSIN have been independently open-sourced, we have not included a unified integration of these models in our repository yet. For the convenience of reproducing our results on these models, we summarize their official repositories below:
+
+| MODEL      | Repository |
+| ---------- | ---------- |
+| FairGNN    | [Github](https://github.com/EnyanDai/FairGNN)     |
+| FairVGNN   | [Github](https://github.com/yuwvandy/FairVGNN)    |
+| FairSIN    | [Github](https://github.com/BUPT-GAMMA/FairSIN)   |
+
+Since the dataset processing methods of FairGNN, FairVGNN, and FairSIN are highly similar, after generating the poisoned graph using NIFA, you can use the following code to process the dataset and make it compatible with their repositories for subsequent evaluations:
+
+```
+glist, _ = dgl.load_graphs(f'../data/{dataset}.bin')  # load poisoned graph file
+g = glist[0]
+
+idx_train = torch.where(g.ndata['train_index'])[0]
+idx_val = torch.where(g.ndata['val_index'])[0]
+idx_test = torch.where(g.ndata['test_index'])[0]
+index_split = {'train_index': idx_train,
+                'val_index': idx_val,
+                'test_index': idx_test}
+features = g.ndata['feature']
+labels = g.ndata['label']
+sens = g.ndata['sensitive'] 
+idx_train, idx_val, idx_test = index_split['train_index'], index_split['val_index'], index_split['test_index']
+adj = sp.coo_matrix((np.ones(g.edges()[0].shape[0]), (g.edges()[0], g.edges()[1])), shape=(labels.shape[0], labels.shape[0]), dtype=np.float32)
+idx_sens_train = idx_train
 ```
 
 ## Licenses
