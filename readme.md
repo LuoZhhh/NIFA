@@ -79,13 +79,11 @@ g = glist[0]
 idx_train = torch.where(g.ndata['train_index'])[0]
 idx_val = torch.where(g.ndata['val_index'])[0]
 idx_test = torch.where(g.ndata['test_index'])[0]
-index_split = {'train_index': idx_train,
-                'val_index': idx_val,
-                'test_index': idx_test}
+
 features = g.ndata['feature']
 labels = g.ndata['label']
-sens = g.ndata['sensitive'] 
-idx_train, idx_val, idx_test = index_split['train_index'], index_split['val_index'], index_split['test_index']
+sens = g.ndata['sensitive']
+
 adj = sp.coo_matrix((np.ones(g.edges()[0].shape[0]), (g.edges()[0], g.edges()[1])), shape=(labels.shape[0], labels.shape[0]), dtype=np.float32)
 idx_sens_train = idx_train
 ```
